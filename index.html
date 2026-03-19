@@ -26,6 +26,7 @@
             padding: 0;
             color: #1C1B1F;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Top Bar */
@@ -84,9 +85,9 @@
             background: white;
             border-bottom: 1px solid var(--md-surface-variant);
             white-space: nowrap;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none; 
         }
-        .tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab {
             padding: 14px 20px;
@@ -239,7 +240,7 @@
     </div>
 
     <script>
-        // --- INITIAL-DATEN AUS DEINER JSON ---
+        // --- DEINE JSON DATEN ---
         const defaultItems = [
             {"category": "Vorbereitung", "task": "Grundriss / Sitzplan prüfen", "detail": "Allgemein"},
             {"category": "Vorbereitung", "task": "Ansprechpartner", "detail": "Allgemein"},
@@ -334,11 +335,15 @@
             {"category": "Reisekoffer", "task": "DYMO", "detail": "Bänder, Batterien"},
             {"category": "Reisekoffer", "task": "Leiter", "detail": "Klapp- oder Ausziehleiter"},
             {"category": "Reisekoffer", "task": "Rittal Schlüssel", "detail": "Netzwerkschrankschlüssel"},
+            {"category": "Reisekoffer", "task": "NW Kabel 1,5 bis 7,5 m", "detail": "Auffüllen der Standort-Reserve"},
+            {"category": "Reisekoffer", "task": "Mehrfachsteckdosen", "detail": ""},
             {"category": "Reisekoffer", "task": "Käfigmuttern / Kabelbinder", "detail": "Klettband"},
             {"category": "Reisekoffer", "task": "Werkzeug-Set", "detail": "Seitenschneider, Schraubendreher, Tester"},
+            {"category": "Reisekoffer", "task": "Netzwerk-Leitungstester", "detail": ""},
             {"category": "Reisekoffer", "task": "Sackkarre / Transportkiste", "detail": ""},
+            {"category": "Reisekoffer", "task": "Zollstock", "detail": ""},
             {"category": "Reisekoffer", "task": "Konsolenkabel + USB Adapter", "detail": ""},
-            {"category": "Reisekoffer", "task": "Zollstock / Akkuschrauber", "detail": ""}
+            {"category": "Reisekoffer", "task": "Kleiner Akkuschrauber", "detail": ""}
         ];
 
         let surveyData = {
@@ -346,7 +351,7 @@
             items: defaultItems.map(item => ({...item, isDone: false, comment: ""}))
         };
 
-        let currentCategory = "Vorbereitung";
+        let currentCategory = "Reisekoffer"; // Default Start-Kategorie
 
         // --- APP LOGIK ---
 
@@ -354,7 +359,6 @@
             const saved = localStorage.getItem('sitesurvey_web_data');
             if (saved) {
                 const parsed = JSON.parse(saved);
-                // Merge gespeicherte Daten mit Default-Struktur (falls neue Items dazugekommen sind)
                 surveyData.location = parsed.location || "";
                 surveyData.items = surveyData.items.map(defItem => {
                     const savedItem = parsed.items.find(si => si.task === defItem.task && si.category === defItem.category);
@@ -363,7 +367,16 @@
             }
             
             document.getElementById('locationInput').value = surveyData.location;
-            const categories = [...new Set(surveyData.items.map(i => i.category))];
+            
+            // Kategorien extrahieren und "Reisekoffer" nach vorne sortieren
+            let categories = [...new Set(surveyData.items.map(i => i.category))].sort();
+            const reisekofferIndex = categories.indexOf("Reisekoffer");
+            if (reisekofferIndex > -1) {
+                categories.splice(reisekofferIndex, 1);
+                categories.unshift("Reisekoffer");
+            }
+
+            currentCategory = categories[0];
             
             renderTabs(categories);
             renderList();
@@ -380,8 +393,18 @@
 
         function selectCategory(cat) {
             currentCategory = cat;
-            renderTabs([...new Set(surveyData.items.map(i => i.category))]);
+            initTabs();
             renderList();
+        }
+
+        function initTabs() {
+            let categories = [...new Set(surveyData.items.map(i => i.category))].sort();
+            const reisekofferIndex = categories.indexOf("Reisekoffer");
+            if (reisekofferIndex > -1) {
+                categories.splice(reisekofferIndex, 1);
+                categories.unshift("Reisekoffer");
+            }
+            renderTabs(categories);
         }
 
         function renderList() {
@@ -389,7 +412,6 @@
             const filtered = surveyData.items.filter(i => i.category === currentCategory);
             
             container.innerHTML = filtered.map((item) => {
-                // Finde realen Index im Haupt-Array
                 const realIndex = surveyData.items.findIndex(i => i.task === item.task && i.category === item.category);
                 return `
                 <div class="survey-card ${item.isDone ? 'done' : ''}">
@@ -416,7 +438,7 @@
 
         function updateComment(index, val) {
             surveyData.items[index].comment = val;
-            saveToDisk(); // Speichert direkt beim Tippen
+            saveToDisk();
         }
 
         function saveToDisk() {
@@ -427,7 +449,7 @@
         function exportCsv() {
             saveToDisk();
             const loc = surveyData.location || "Unbekannt";
-            let csv = "\uFEFF"; // UTF-8 BOM für Excel
+            let csv = "\uFEFF"; 
             csv += `Standort: ${loc};;;;\n`;
             csv += "Kategorie;Aufgabe;Thema/Detail;Erledigt;Bemerkung\n";
             
@@ -460,7 +482,6 @@
             renderList();
         }
 
-        // Start
         init();
     </script>
 </body>
