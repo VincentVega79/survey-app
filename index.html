@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>M&A Site Survey</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -17,6 +17,8 @@
             --md-outline: #79747E;
             --md-error: #B3261E;
             --md-success: #E8F5E9;
+            /* Geschätzte Höhe der fixierten Elemente für das Scroll-Padding */
+            --sticky-top-height: 180px; 
         }
 
         body {
@@ -27,18 +29,28 @@
             color: #1C1B1F;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            /* Verhindert Springen, wenn Elemente sticky werden */
+            scroll-padding-top: var(--sticky-top-height);
         }
 
-        header {
-            background-color: var(--md-surface-variant);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* --- STICKY CONTAINER --- */
+        /* Dieser Container fasst Header und Location-Card zusammen und fixiert sie ganz oben */
+        .fixed-top-container {
             position: sticky;
             top: 0;
             z-index: 100;
+            background-color: var(--md-surface);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Top Bar */
+        header {
+            background-color: var(--md-surface-variant);
+            padding: 16px;
+            padding-top: calc(16px + env(safe-area-inset-top)); /* Berücksichtigt iPhone Notch */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         header h1 { margin: 0; font-size: 18px; font-weight: 500; }
@@ -52,6 +64,7 @@
             margin-left: 4px;
         }
 
+        /* Location Card */
         .location-card {
             background-color: rgba(234, 221, 255, 0.4);
             margin: 12px;
@@ -72,15 +85,25 @@
             outline: none;
         }
 
+        /* --- STICKY TABS --- */
+        /* Die Kategorien-Leiste wird sticky, sobald sie den unteren Rand des Top-Containers erreicht */
+        .tabs-container {
+            position: sticky;
+            /* Berechnete Position: Header-Höhe + Location-Card-Höhe */
+            top: calc(72px + 76px + env(safe-area-inset-top)); 
+            z-index: 90;
+            background-color: white;
+            border-bottom: 1px solid var(--md-surface-variant);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+        }
+
         .tabs {
             display: flex;
             overflow-x: auto;
-            background: white;
-            border-bottom: 1px solid var(--md-surface-variant);
             white-space: nowrap;
-            scrollbar-width: none; 
+            scrollbar-width: none; /* Firefox */
         }
-        .tabs::-webkit-scrollbar { display: none; }
+        .tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
 
         .tab {
             padding: 14px 20px;
@@ -96,7 +119,11 @@
             border-bottom-color: var(--md-primary);
         }
 
-        .survey-list { padding: 12px; padding-bottom: 100px; }
+        /* Survey List */
+        .survey-list { 
+            padding: 12px; 
+            padding-bottom: 120px; /* Platz für safe area unten */
+        }
 
         .survey-card {
             background: white;
@@ -147,6 +174,9 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
+        .modal h3 { margin-top: 0; }
+        .modal p { color: #555; font-size: 14px; line-height: 1.5; }
+
         .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
 
         .btn-text {
@@ -159,32 +189,38 @@
             border-radius: 20px;
         }
 
+        .btn-text:active { background-color: var(--md-surface-variant); }
         .btn-danger { color: var(--md-error); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>M&A Site Survey</h1>
-        <div class="header-actions">
-            <button onclick="showResetDialog()" title="Reset"><span class="material-icons">delete</span></button>
-            <button onclick="exportCsv()" title="Export CSV"><span class="material-icons">share</span></button>
-            <button onclick="saveToDisk()" title="Speichern"><span class="material-icons">check</span></button>
-        </div>
-    </header>
+    <div class="fixed-top-container">
+        <header>
+            <h1>M&A Site Survey</h1>
+            <div class="header-actions">
+                <button onclick="showResetDialog()" title="Reset"><span class="material-icons">delete</span></button>
+                <button onclick="exportCsv()" title="Export CSV"><span class="material-icons">share</span></button>
+                <button onclick="saveToDisk()" title="Speichern"><span class="material-icons">check</span></button>
+            </div>
+        </header>
 
-    <div class="location-card">
-        <span style="font-size: 20px;">📍</span>
-        <input type="text" id="locationInput" placeholder="Standort: z.B. Werk Frankfurt" oninput="saveToDisk()">
+        <div class="location-card">
+            <span style="font-size: 20px;">📍</span>
+            <input type="text" id="locationInput" placeholder="Standort: z.B. Werk Frankfurt" oninput="saveToDisk()">
+        </div>
     </div>
 
-    <div class="tabs" id="tabsContainer"></div>
+    <div class="tabs-container">
+        <div class="tabs" id="tabsContainer"></div>
+    </div>
+
     <div class="survey-list" id="surveyList"></div>
 
     <div id="modal-overlay">
         <div class="modal">
             <h3>Daten zurücksetzen?</h3>
-            <p>Möchtest du wirklich alle Eingaben und den Standort löschen?</p>
+            <p>Möchtest du wirklich alle Eingaben und den Standort löschen? Das kann nicht rückgängig gemacht werden.</p>
             <div class="modal-actions">
                 <button class="btn-text" onclick="closeResetDialog()">Abbrechen</button>
                 <button class="btn-text btn-danger" onclick="resetAll()">Ja, Reset</button>
@@ -300,6 +336,8 @@
         let surveyData = { location: "", items: defaultItems.map(item => ({...item, isDone: false, comment: ""})) };
         let currentCategory = "Reisekoffer";
 
+        // --- SORTIER-LOGIK ---
+        // Legt die feste Reihenfolge der Tabs fest
         function getSortedCategories() {
             let cats = [...new Set(surveyData.items.map(i => i.category))];
             const order = ["Reisekoffer", "Vorbereitung", "Onsite", "Spareparts"];
@@ -313,6 +351,7 @@
             return cats;
         }
 
+        // --- APP LOGIK ---
         function init() {
             const saved = localStorage.getItem('sitesurvey_web_data');
             if (saved) {
@@ -325,7 +364,7 @@
             }
             document.getElementById('locationInput').value = surveyData.location;
             const cats = getSortedCategories();
-            currentCategory = cats[0];
+            currentCategory = cats[0]; // Standardmäßig "Reisekoffer" auswählen
             renderTabs(cats);
             renderList();
         }
@@ -337,12 +376,28 @@
                     ${cat}
                 </div>
             `).join('');
+            
+            // Auto-Scroll zum aktiven Tab, falls er außerhalb des Sichtfelds ist
+            const activeTab = container.querySelector('.tab.active');
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
         }
 
         function selectCategory(cat) {
+            if (currentCategory === cat) return;
             currentCategory = cat;
             renderTabs(getSortedCategories());
             renderList();
+            
+            // Nach dem Tab-Wechsel zum Anfang der Liste scrollen (Smooth)
+            // Unter Berücksichtigung der Sticky-Elemente
+            const stickyHeight = document.querySelector('.fixed-top-container').offsetHeight + 
+                                 document.querySelector('.tabs-container').offsetHeight;
+            window.scrollTo({
+                top: stickyHeight - 60, // Kleiner Puffer
+                behavior: 'smooth'
+            });
         }
 
         function renderList() {
@@ -365,15 +420,24 @@
         }
 
         function toggleDone(idx) { surveyData.items[idx].isDone = !surveyData.items[idx].isDone; saveToDisk(); renderList(); }
-        function updateComment(idx, val) { surveyData.items[idx].comment = val; saveToDisk(); }
-        function saveToDisk() { surveyData.location = document.getElementById('locationInput').value; localStorage.setItem('sitesurvey_web_data', JSON.stringify(surveyData)); }
+        function updateComment(idx, val) { surveyData.items[idx].comment = val; saveToDisk(); } // Automatisches Speichern beim Tippen
+        
+        function saveToDisk() { 
+            surveyData.location = document.getElementById('locationInput').value; 
+            localStorage.setItem('sitesurvey_web_data', JSON.stringify(surveyData)); 
+        }
 
+        // --- CSV EXPORT MIT UMLAUT-SCHUTZ ---
         function exportCsv() {
             saveToDisk();
             const loc = surveyData.location || "Unbekannt";
+            // UTF-8 BOM für korrekte Umlaute in Excel/LibreOffice
             let csv = "\uFEFFStandort: " + loc + ";;;;\nKategorie;Aufgabe;Thema/Detail;Erledigt;Bemerkung\n";
             surveyData.items.forEach(i => {
-                const t = i.task.replace(/;/g, ',').replace(/\n/g, ' '), d = i.detail.replace(/;/g, ',').replace(/\n/g, ' '), c = (i.comment || "").replace(/;/g, ',').replace(/\n/g, ' ');
+                // Semikolons in Texten durch Kommas ersetzen, um CSV-Struktur nicht zu zerstören
+                const t = i.task.replace(/;/g, ',').replace(/\n/g, ' '), 
+                      d = i.detail.replace(/;/g, ',').replace(/\n/g, ' '), 
+                      c = (i.comment || "").replace(/;/g, ',').replace(/\n/g, ' ');
                 csv += `${i.category};${t};${d};${i.isDone ? 'X' : ''};${c}\n`;
             });
             const b = new Blob([csv], { type: 'text/csv;charset=utf-8;' }), l = document.createElement("a"), u = URL.createObjectURL(b);
@@ -381,13 +445,18 @@
             document.body.appendChild(l); l.click(); document.body.removeChild(l);
         }
 
+        // --- RESET DIALOG LOGIK ---
         function showResetDialog() { document.getElementById('modal-overlay').style.display = 'flex'; }
         function closeResetDialog() { document.getElementById('modal-overlay').style.display = 'none'; }
         function resetAll() {
             surveyData.location = ""; surveyData.items.forEach(i => { i.isDone = false; i.comment = ""; });
-            document.getElementById('locationInput').value = ""; saveToDisk(); closeResetDialog(); renderList();
+            document.getElementById('locationInput').value = ""; 
+            localStorage.removeItem('sitesurvey_web_data'); // LocalStorage komplett leeren
+            closeResetDialog(); 
+            init(); // App neu initialisieren
         }
 
+        // Start
         init();
     </script>
 </body>
