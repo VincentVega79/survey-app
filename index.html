@@ -29,7 +29,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Top Bar */
         header {
             background-color: var(--md-surface-variant);
             padding: 16px;
@@ -42,11 +41,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 500;
-        }
+        header h1 { margin: 0; font-size: 18px; font-weight: 500; }
 
         .header-actions button {
             background: none;
@@ -57,7 +52,6 @@
             margin-left: 4px;
         }
 
-        /* Location Card */
         .location-card {
             background-color: rgba(234, 221, 255, 0.4);
             margin: 12px;
@@ -78,7 +72,6 @@
             outline: none;
         }
 
-        /* Tab Bar */
         .tabs {
             display: flex;
             overflow-x: auto;
@@ -103,11 +96,7 @@
             border-bottom-color: var(--md-primary);
         }
 
-        /* Survey List */
-        .survey-list {
-            padding: 12px;
-            padding-bottom: 100px;
-        }
+        .survey-list { padding: 12px; padding-bottom: 100px; }
 
         .survey-card {
             background: white;
@@ -118,40 +107,14 @@
             border: 1px solid transparent;
         }
 
-        .survey-card.done {
-            background-color: var(--md-success);
-            border-color: #C8E6C9;
-        }
+        .survey-card.done { background-color: var(--md-success); border-color: #C8E6C9; }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
         .task-info { flex: 1; }
+        .task-info h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; }
+        .task-info p { margin: 4px 0 0; font-size: 12px; color: #555; font-style: italic; }
 
-        .task-info h3 {
-            margin: 0;
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .task-info p {
-            margin: 4px 0 0;
-            font-size: 12px;
-            color: #555;
-            font-style: italic;
-        }
-
-        .survey-card input[type="checkbox"] {
-            width: 24px;
-            height: 24px;
-            accent-color: var(--md-primary);
-            cursor: pointer;
-        }
+        .survey-card input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--md-primary); cursor: pointer; }
 
         .comment-field {
             margin-top: 12px;
@@ -165,7 +128,6 @@
             background-color: rgba(255,255,255,0.7);
         }
 
-        /* Modal / Dialog */
         #modal-overlay {
             display: none;
             position: fixed;
@@ -185,14 +147,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        .modal h3 { margin-top: 0; }
-
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 24px;
-        }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
 
         .btn-text {
             background: none;
@@ -204,7 +159,6 @@
             border-radius: 20px;
         }
 
-        .btn-text:active { background-color: var(--md-surface-variant); }
         .btn-danger { color: var(--md-error); }
     </style>
 </head>
@@ -225,13 +179,12 @@
     </div>
 
     <div class="tabs" id="tabsContainer"></div>
-
     <div class="survey-list" id="surveyList"></div>
 
     <div id="modal-overlay">
         <div class="modal">
             <h3>Daten zurücksetzen?</h3>
-            <p>Möchtest du wirklich alle Eingaben und den Standort löschen? Das kann nicht rückgängig gemacht werden.</p>
+            <p>Möchtest du wirklich alle Eingaben und den Standort löschen?</p>
             <div class="modal-actions">
                 <button class="btn-text" onclick="closeResetDialog()">Abbrechen</button>
                 <button class="btn-text btn-danger" onclick="resetAll()">Ja, Reset</button>
@@ -240,7 +193,6 @@
     </div>
 
     <script>
-        // --- DEINE JSON DATEN ---
         const defaultItems = [
             {"category": "Vorbereitung", "task": "Grundriss / Sitzplan prüfen", "detail": "Allgemein"},
             {"category": "Vorbereitung", "task": "Ansprechpartner", "detail": "Allgemein"},
@@ -279,52 +231,52 @@
             {"category": "Vorbereitung", "task": "Das letzte Standortpflege Protokoll prüfen", "detail": "Allgemein"},
             {"category": "Vorbereitung", "task": "Reisekoffer packen", "detail": "Allgemein"},
             {"category": "Vorbereitung", "task": "Ausdrucke erstellen", "detail": "Allgemein"},
-            {"category": "Onsite", "task": "Branch Mgmt informieren", "detail": "Bei Ankunft informieren was gemacht wird, wie lange man vorrausichtlich da ist und nach Themen fragen"},
-            {"category": "Onsite", "task": "Zugang sicherstellen", "detail": "Zugang zu Gebäude + Serverräume + Technikräume etc."},
+            {"category": "Onsite", "task": "Branch Mgmt informieren", "detail": "Bei Ankunft informieren was gemacht wird"},
+            {"category": "Onsite", "task": "Zugang sicherstellen", "detail": "Zugang zu Gebäude + Technikräume"},
             {"category": "Onsite", "task": "Standortpflege Protokoll ausfüllen", "detail": "Diese Datei fortwährend ausfüllen!"},
-            {"category": "Onsite", "task": "NOC über Ankunft informieren", "detail": "Zeitpunkt für Test der OoB Box festlegen"},
+            {"category": "Onsite", "task": "NOC über Ankunft informieren", "detail": "Test der OoB Box festlegen"},
             {"category": "Onsite", "task": "Grundriss abgleichen", "detail": "Im Standort-Ordner unter Building"},
             {"category": "Onsite", "task": "Sitzplan abgleichen", "detail": ""},
-            {"category": "Onsite", "task": "Mitarbeiterzahlen", "detail": "Stimmen unsere Daten mit der Wirklichkeit überein?"},
-            {"category": "Onsite", "task": "Sonderfälle", "detail": "Im Standort-Ordner unter General documents dokumentieren"},
+            {"category": "Onsite", "task": "Mitarbeiterzahlen", "detail": "Wirklichkeit vs. Daten"},
+            {"category": "Onsite", "task": "Sonderfälle", "detail": "Im Standort-Ordner dokumentieren"},
             {"category": "Onsite", "task": "Brandlast Serverräume", "detail": "Papierlager o.ä. entfernen"},
-            {"category": "Onsite", "task": "Nutzung Serverraum o.k.?", "detail": "Kein Drucker- oder Putzmittelraum"},
-            {"category": "Onsite", "task": "Cleanup / Neuverkabelung notwendig?", "detail": "Saubere Verlegung, Farbschema, alte Komponenten"},
-            {"category": "Onsite", "task": "Sichtprüfung Stromversorgung", "detail": "Schaltschrank sauber, verschließbar und dokumentiert"},
-            {"category": "Onsite", "task": "Checkheft Stromversorgung", "detail": "Regelmäßige Überprüfung durch Fachbetrieb"},
+            {"category": "Onsite", "task": "Nutzung Serverraum o.k.?", "detail": "Kein Putzmittelraum"},
+            {"category": "Onsite", "task": "Cleanup / Neuverkabelung notwendig?", "detail": "Saubere Verlegung, Farbschema"},
+            {"category": "Onsite", "task": "Sichtprüfung Stromversorgung", "detail": "Schaltschrank sauber/dokumentiert"},
+            {"category": "Onsite", "task": "Checkheft Stromversorgung", "detail": "Regelmäßige Überprüfung"},
             {"category": "Onsite", "task": "Sichtprüfung Klimatisierung", "detail": "Kalte Luft, keine Leckage"},
-            {"category": "Onsite", "task": "Checkheft Klimaanlage", "detail": "Regelmäßige Überprüfung durch Fachbetrieb"},
-            {"category": "Onsite", "task": "Sichtprüfung Geräte im Serverraum", "detail": "Nicht aktive Geräte ausbauen"},
-            {"category": "Onsite", "task": "Netzwerkschränke Maße", "detail": "HE / Außenmaße / Hersteller / Modell"},
+            {"category": "Onsite", "task": "Checkheft Klimaanlage", "detail": "Regelmäßige Überprüfung"},
+            {"category": "Onsite", "task": "Sichtprüfung Geräte im Serverraum", "detail": "Inaktive Geräte ausbauen"},
+            {"category": "Onsite", "task": "Netzwerkschränke Maße", "detail": "HE / Hersteller / Modell"},
             {"category": "Onsite", "task": "Platz für zusätzliche Schränke", "detail": "Reserve im Serverraum?"},
             {"category": "Onsite", "task": "Stromversorgung Erweiterung", "detail": "Steckdosenleisten etc."},
-            {"category": "Onsite", "task": "Sichtprüfung Netzwerk- und Serverschränke", "detail": "Sauberkeit und Kabelverlegung"},
-            {"category": "Onsite", "task": "Platz für Erweiterung im Schrank?", "detail": "Platz für Switche / Patchpanels"},
-            {"category": "Onsite", "task": "Netmon aktive Komponenten prüfen", "detail": "Alles grün und online?"},
-            {"category": "Onsite", "task": "Netmon Struktur o.k.?", "detail": "Zuordnung und Benamung"},
-            {"category": "Onsite", "task": "WAN prüfen", "detail": "APL Lage, Kabelwege, Beschriftung"},
-            {"category": "Onsite", "task": "Starlink", "detail": "Vermieter-Genehmigung, Montage-Auskundung"},
-            {"category": "Onsite", "task": "LAN Design prüfen", "detail": "Switche korrekt verbunden und beschriftet"},
-            {"category": "Onsite", "task": "LWL prüfen", "detail": "Patchpanels beschriftet, Schutzkappen"},
-            {"category": "Onsite", "task": "WiFi Design prüfen", "detail": "AccessPoints online, blaue Kabel"},
-            {"category": "Onsite", "task": "WiFi / Accesspoints Empfang", "detail": "Positionen nachvollziehbar, Empfang o.k."},
-            {"category": "Onsite", "task": "Patchplan vorhanden?", "detail": "APs, DECT und CCTV dokumentieren"},
+            {"category": "Onsite", "task": "Sichtprüfung Netzwerk- und Serverschränke", "detail": "Sauberkeit/Kabelverlegung"},
+            {"category": "Onsite", "task": "Platz für Erweiterung im Schrank?", "detail": "Platz für Switche/Patchpanels"},
+            {"category": "Onsite", "task": "Netmon aktive Komponenten prüfen", "detail": "Alles grün?"},
+            {"category": "Onsite", "task": "Netmon Struktur o.k.?", "detail": "Benamung korrekt?"},
+            {"category": "Onsite", "task": "WAN prüfen", "detail": "APL Lage, Kabelwege"},
+            {"category": "Onsite", "task": "Starlink", "detail": "Vermieter-Genehmigung"},
+            {"category": "Onsite", "task": "LAN Design prüfen", "detail": "Switche korrekt verbunden"},
+            {"category": "Onsite", "task": "LWL prüfen", "detail": "Patchpanels beschriftet"},
+            {"category": "Onsite", "task": "WiFi Design prüfen", "detail": "APs online, blaue Kabel"},
+            {"category": "Onsite", "task": "WiFi / Accesspoints Empfang", "detail": "Empfang o.k."},
+            {"category": "Onsite", "task": "Patchplan vorhanden?", "detail": "APs, DECT, CCTV dokumentieren"},
             {"category": "Onsite", "task": "CCTV -Kameras eingetragen?", "detail": "Doku vorhanden?"},
             {"category": "Onsite", "task": "DECT-Sender eingetragen?", "detail": "Empfang prüfen"},
-            {"category": "Onsite", "task": "IPT Phones", "detail": "Hardphones vorhanden? Notfalltelefone"},
+            {"category": "Onsite", "task": "IPT Phones", "detail": "Hardphones vorhanden?"},
             {"category": "Onsite", "task": "WLAN Phones?", "detail": "Gibt es WLAN Telefone?"},
-            {"category": "Onsite", "task": "Beschriftung", "detail": "Server, Switche, Router, Patchpanels"},
-            {"category": "Onsite", "task": "Kundennetzwerk Komponenten", "detail": "Vom DSV-NW getrennt? Beschriftet?"},
-            {"category": "Onsite", "task": "Zeiterfassung-Terminal", "detail": "System korrekt eingezeichnet?"},
-            {"category": "Onsite", "task": "Gebäudemanagement Netzwerk?", "detail": "BMA, EMA, Zuko getrennt?"},
-            {"category": "Onsite", "task": "Gate- / Door Control", "detail": "Sprechanlagen, Hersteller, Doku-Abgleich"},
-            {"category": "Onsite", "task": "Server Check", "detail": "USV Anschluss 50/50, Beschriftung"},
-            {"category": "Onsite", "task": "Drucker", "detail": "Decom Process für alte Geräte"},
-            {"category": "Onsite", "task": "USV Sichtprüfung", "detail": "Batteriestatus, Alter, USV Sheet eintragen"},
-            {"category": "Onsite", "task": "USV Bedarf?", "detail": "Neue USV notwendig? Netzwerkanschluss?"},
-            {"category": "Onsite", "task": "Neue Bilder aufnehmen", "detail": "MDF/IDF Bilder beschriftet ablegen"},
-            {"category": "Onsite", "task": "Ersatz IT-Equipment vor Ort", "detail": "Patchkabel, Mäuse, Tastaturen auffüllen"},
-            {"category": "Onsite", "task": "Branch Mgmt informieren", "detail": "Abreise ankündigen, Resume"},
+            {"category": "Onsite", "task": "Beschriftung", "detail": "Server, Switche, Router"},
+            {"category": "Onsite", "task": "Kundennetzwerk Komponenten", "detail": "Vom DSV-NW getrennt?"},
+            {"category": "Onsite", "task": "Zeiterfassung-Terminal", "detail": "System korrekt?"},
+            {"category": "Onsite", "task": "Gebäudemanagement Netzwerk?", "detail": "BMA, EMA, Zuko"},
+            {"category": "Onsite", "task": "Gate- / Door Control", "detail": "Sprechanlagen, Hersteller"},
+            {"category": "Onsite", "task": "Server Check", "detail": "USV Anschluss 50/50"},
+            {"category": "Onsite", "task": "Drucker", "detail": "Decom Process"},
+            {"category": "Onsite", "task": "USV Sichtprüfung", "detail": "Batteriestatus, Alter"},
+            {"category": "Onsite", "task": "USV Bedarf?", "detail": "Neue USV notwendig?"},
+            {"category": "Onsite", "task": "Neue Bilder aufnehmen", "detail": "MDF/IDF Bilder beschriftet"},
+            {"category": "Onsite", "task": "Ersatz IT-Equipment vor Ort", "detail": "Patchkabel, Mäuse auffüllen"},
+            {"category": "Onsite", "task": "Branch Mgmt informieren", "detail": "Abreise ankündigen"},
             {"category": "Onsite", "task": "Karten / Schlüssel abgeben", "detail": "Nix vergessen?"},
             {"category": "Onsite", "task": "NOC informieren", "detail": "Abreise melden"},
             {"category": "Spareparts", "task": "Netzwerkkabel 1,5 m bis 7,5 m", "detail": "grau für User"},
@@ -333,27 +285,33 @@
             {"category": "Spareparts", "task": "Tastatur / Maus", "detail": ""},
             {"category": "Spareparts", "task": "Headset", "detail": "Kabelgebunden"},
             {"category": "Reisekoffer", "task": "DYMO", "detail": "Bänder, Batterien"},
-            {"category": "Reisekoffer", "task": "Leiter", "detail": "Klapp- oder Ausziehleiter"},
+            {"category": "Reisekoffer", "task": "Leiter", "detail": "Klapp-/Ausziehleiter"},
             {"category": "Reisekoffer", "task": "Rittal Schlüssel", "detail": "Netzwerkschrankschlüssel"},
             {"category": "Reisekoffer", "task": "NW Kabel 1,5 bis 7,5 m", "detail": "Auffüllen der Standort-Reserve"},
             {"category": "Reisekoffer", "task": "Mehrfachsteckdosen", "detail": ""},
             {"category": "Reisekoffer", "task": "Käfigmuttern / Kabelbinder", "detail": "Klettband"},
-            {"category": "Reisekoffer", "task": "Werkzeug-Set", "detail": "Seitenschneider, Schraubendreher, Tester"},
+            {"category": "Reisekoffer", "task": "Werkzeug-Set", "detail": "Seitenschneider, Tester"},
             {"category": "Reisekoffer", "task": "Netzwerk-Leitungstester", "detail": ""},
             {"category": "Reisekoffer", "task": "Sackkarre / Transportkiste", "detail": ""},
-            {"category": "Reisekoffer", "task": "Zollstock", "detail": ""},
-            {"category": "Reisekoffer", "task": "Konsolenkabel + USB Adapter", "detail": ""},
-            {"category": "Reisekoffer", "task": "Kleiner Akkuschrauber", "detail": ""}
+            {"category": "Reisekoffer", "task": "Zollstock / Akkuschrauber", "detail": ""},
+            {"category": "Reisekoffer", "task": "Konsolenkabel + USB Adapter", "detail": ""}
         ];
 
-        let surveyData = {
-            location: "",
-            items: defaultItems.map(item => ({...item, isDone: false, comment: ""}))
-        };
+        let surveyData = { location: "", items: defaultItems.map(item => ({...item, isDone: false, comment: ""})) };
+        let currentCategory = "Reisekoffer";
 
-        let currentCategory = "Reisekoffer"; // Default Start-Kategorie
-
-        // --- APP LOGIK ---
+        function getSortedCategories() {
+            let cats = [...new Set(surveyData.items.map(i => i.category))];
+            const order = ["Reisekoffer", "Vorbereitung", "Onsite", "Spareparts"];
+            cats.sort((a, b) => {
+                let idxA = order.indexOf(a), idxB = order.indexOf(b);
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return a.localeCompare(b);
+            });
+            return cats;
+        }
 
         function init() {
             const saved = localStorage.getItem('sitesurvey_web_data');
@@ -365,26 +323,16 @@
                     return savedItem ? savedItem : defItem;
                 });
             }
-            
             document.getElementById('locationInput').value = surveyData.location;
-            
-            // Kategorien extrahieren und "Reisekoffer" nach vorne sortieren
-            let categories = [...new Set(surveyData.items.map(i => i.category))].sort();
-            const reisekofferIndex = categories.indexOf("Reisekoffer");
-            if (reisekofferIndex > -1) {
-                categories.splice(reisekofferIndex, 1);
-                categories.unshift("Reisekoffer");
-            }
-
-            currentCategory = categories[0];
-            
-            renderTabs(categories);
+            const cats = getSortedCategories();
+            currentCategory = cats[0];
+            renderTabs(cats);
             renderList();
         }
 
-        function renderTabs(categories) {
+        function renderTabs(cats) {
             const container = document.getElementById('tabsContainer');
-            container.innerHTML = categories.map(cat => `
+            container.innerHTML = cats.map(cat => `
                 <div class="tab ${cat === currentCategory ? 'active' : ''}" onclick="selectCategory('${cat}')">
                     ${cat}
                 </div>
@@ -393,26 +341,15 @@
 
         function selectCategory(cat) {
             currentCategory = cat;
-            initTabs();
+            renderTabs(getSortedCategories());
             renderList();
-        }
-
-        function initTabs() {
-            let categories = [...new Set(surveyData.items.map(i => i.category))].sort();
-            const reisekofferIndex = categories.indexOf("Reisekoffer");
-            if (reisekofferIndex > -1) {
-                categories.splice(reisekofferIndex, 1);
-                categories.unshift("Reisekoffer");
-            }
-            renderTabs(categories);
         }
 
         function renderList() {
             const container = document.getElementById('surveyList');
             const filtered = surveyData.items.filter(i => i.category === currentCategory);
-            
             container.innerHTML = filtered.map((item) => {
-                const realIndex = surveyData.items.findIndex(i => i.task === item.task && i.category === item.category);
+                const realIdx = surveyData.items.findIndex(i => i.task === item.task && i.category === item.category);
                 return `
                 <div class="survey-card ${item.isDone ? 'done' : ''}">
                     <div class="card-header">
@@ -420,66 +357,35 @@
                             <h3>${item.task}</h3>
                             ${item.detail ? `<p>${item.detail.replace(/\n/g, '<br>')}</p>` : ''}
                         </div>
-                        <input type="checkbox" ${item.isDone ? 'checked' : ''} 
-                               onchange="toggleDone(${realIndex})">
+                        <input type="checkbox" ${item.isDone ? 'checked' : ''} onchange="toggleDone(${realIdx})">
                     </div>
-                    <input type="text" class="comment-field" placeholder="Ergebnis / Notiz" 
-                           value="${item.comment || ''}" oninput="updateComment(${realIndex}, this.value)">
-                </div>
-                `;
+                    <input type="text" class="comment-field" placeholder="Ergebnis / Notiz" value="${item.comment || ''}" oninput="updateComment(${realIdx}, this.value)">
+                </div>`;
             }).join('');
         }
 
-        function toggleDone(index) {
-            surveyData.items[index].isDone = !surveyData.items[index].isDone;
-            saveToDisk();
-            renderList();
-        }
-
-        function updateComment(index, val) {
-            surveyData.items[index].comment = val;
-            saveToDisk();
-        }
-
-        function saveToDisk() {
-            surveyData.location = document.getElementById('locationInput').value;
-            localStorage.setItem('sitesurvey_web_data', JSON.stringify(surveyData));
-        }
+        function toggleDone(idx) { surveyData.items[idx].isDone = !surveyData.items[idx].isDone; saveToDisk(); renderList(); }
+        function updateComment(idx, val) { surveyData.items[idx].comment = val; saveToDisk(); }
+        function saveToDisk() { surveyData.location = document.getElementById('locationInput').value; localStorage.setItem('sitesurvey_web_data', JSON.stringify(surveyData)); }
 
         function exportCsv() {
             saveToDisk();
             const loc = surveyData.location || "Unbekannt";
-            let csv = "\uFEFF"; 
-            csv += `Standort: ${loc};;;;\n`;
-            csv += "Kategorie;Aufgabe;Thema/Detail;Erledigt;Bemerkung\n";
-            
+            let csv = "\uFEFFStandort: " + loc + ";;;;\nKategorie;Aufgabe;Thema/Detail;Erledigt;Bemerkung\n";
             surveyData.items.forEach(i => {
-                const taskClean = i.task.replace(/;/g, ',').replace(/\n/g, ' ');
-                const detailClean = i.detail.replace(/;/g, ',').replace(/\n/g, ' ');
-                const commentClean = (i.comment || "").replace(/;/g, ',').replace(/\n/g, ' ');
-                csv += `${i.category};${taskClean};${detailClean};${i.isDone ? 'X' : ''};${commentClean}\n`;
+                const t = i.task.replace(/;/g, ',').replace(/\n/g, ' '), d = i.detail.replace(/;/g, ',').replace(/\n/g, ' '), c = (i.comment || "").replace(/;/g, ',').replace(/\n/g, ' ');
+                csv += `${i.category};${t};${d};${i.isDone ? 'X' : ''};${c}\n`;
             });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Survey_${loc.replace(/\s+/g, '_')}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const b = new Blob([csv], { type: 'text/csv;charset=utf-8;' }), l = document.createElement("a"), u = URL.createObjectURL(b);
+            l.setAttribute("href", u); l.setAttribute("download", `Survey_${loc.replace(/\s+/g, '_')}.csv`);
+            document.body.appendChild(l); l.click(); document.body.removeChild(l);
         }
 
         function showResetDialog() { document.getElementById('modal-overlay').style.display = 'flex'; }
         function closeResetDialog() { document.getElementById('modal-overlay').style.display = 'none'; }
-
         function resetAll() {
-            surveyData.location = "";
-            surveyData.items.forEach(i => { i.isDone = false; i.comment = ""; });
-            document.getElementById('locationInput').value = "";
-            saveToDisk();
-            closeResetDialog();
-            renderList();
+            surveyData.location = ""; surveyData.items.forEach(i => { i.isDone = false; i.comment = ""; });
+            document.getElementById('locationInput').value = ""; saveToDisk(); closeResetDialog(); renderList();
         }
 
         init();
