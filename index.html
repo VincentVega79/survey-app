@@ -17,8 +17,6 @@
             --dsv-blue: #002664;
             --dsv-orange: #FF6600;
             --md-surface: #FEF7FF;
-            --md-surface-variant: #E7E0EC;
-            --md-outline: #79747E;
             --md-success: #E8F5E9;
         }
 
@@ -27,7 +25,6 @@
             background-color: var(--md-surface);
             margin: 0; padding: 0; color: #1C1B1F;
             -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
         }
 
         .fixed-top {
@@ -43,16 +40,16 @@
             color: white;
         }
 
-        header h1 { font-size: 18px; margin: 0; font-weight: 500; }
+        header h1 { font-size: 18px; margin: 0; }
 
         .header-actions button {
             background: none; border: none; color: white;
-            cursor: pointer; padding: 8px; border-radius: 50%;
+            cursor: pointer; padding: 8px;
         }
 
-        .search-container { padding: 12px; position: relative; background: var(--md-surface); }
+        .search-container { padding: 12px; position: relative; }
         .search-input {
-            width: 100%; padding: 15px; border: 1px solid var(--md-outline);
+            width: 100%; padding: 15px; border: 1px solid #79747E;
             border-radius: 12px; font-size: 16px; box-sizing: border-box; 
             outline: none; background: white;
         }
@@ -60,58 +57,49 @@
         #dropdown {
             position: absolute; top: calc(100% - 5px); left: 12px; right: 12px;
             background: white; border: 1px solid #ccc; border-radius: 0 0 12px 12px;
-            max-height: 400px; overflow-y: auto; z-index: 2000;
+            max-height: 350px; overflow-y: auto; z-index: 2000;
             display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         .dropdown-item { 
             padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; 
-            font-size: 14px; line-height: 1.4; color: #333;
+            font-size: 14px; color: #333;
         }
-        .dropdown-item:active { background-color: #f0f0f0; }
 
-        #welcome-screen { padding: 30px 20px; text-align: center; color: #444; }
+        #welcome-screen { padding: 30px 20px; text-align: center; }
         .info-box {
             background: white; border-radius: 20px; padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-top: 20px; text-align: left;
-        }
-        .info-box h2 { font-size: 18px; color: var(--dsv-blue); margin-top: 0; }
-        .step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; font-size: 14px; }
-        .step .icon-circle { 
-            background: var(--dsv-blue); color: white; border-radius: 50%;
-            width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; font-size: 12px; font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: left;
         }
 
         .tabs-container {
-            position: sticky; top: 140px; 
-            z-index: 500; background: white; border-bottom: 1px solid #ddd;
+            position: sticky; top: 140px; z-index: 500; 
+            background: white; border-bottom: 1px solid #ddd;
             display: none;
         }
         .tabs { display: flex; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-        .tab { padding: 14px 20px; cursor: pointer; color: var(--md-outline); border-bottom: 3px solid transparent; font-size: 14px; }
+        .tab { padding: 14px 20px; cursor: pointer; color: #79747E; border-bottom: 3px solid transparent; }
         .tab.active { color: var(--dsv-blue); border-bottom-color: var(--dsv-orange); font-weight: bold; }
 
         .survey-list { padding: 12px; padding-bottom: 100px; display: none; }
         .survey-card {
             background: white; border-radius: 12px; padding: 16px;
             margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
         }
-        .survey-card.done { background-color: var(--md-success); border: 1px solid #c8e6c9; }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-        .task-info h3 { margin: 0; font-size: 15px; line-height: 1.3; }
-        .task-info p { margin: 4px 0 0; font-size: 12px; color: #666; }
+        .survey-card.done { background-color: var(--md-success) !important; border: 1px solid #c8e6c9; }
         
-        .check-box { width: 30px; height: 30px; accent-color: var(--dsv-blue); cursor: pointer; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .check-box { width: 30px; height: 30px; accent-color: var(--dsv-blue); }
         .comment-field {
             margin-top: 10px; width: 100%; border: 1px solid #ccc;
-            border-radius: 8px; padding: 10px; box-sizing: border-box; font-size: 14px;
+            border-radius: 8px; padding: 10px; box-sizing: border-box;
         }
 
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 3000; justify-content: center; align-items: center;
         }
-        .modal { background: white; padding: 24px; border-radius: 20px; width: 80%; max-width: 350px; }
+        .modal { background: white; padding: 24px; border-radius: 20px; width: 80%; }
     </style>
 </head>
 <body>
@@ -126,19 +114,16 @@
             </div>
         </header>
         <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="Ort oder Code suchen..." oninput="filterLocations()" autocomplete="off">
-            <div id="dropdown" class="dropdown-list"></div>
+            <input type="text" id="searchInput" class="search-input" placeholder="Suche (z.B. Frankfurt Lyoner Str)" oninput="filterLocations()" autocomplete="off">
+            <div id="dropdown"></div>
         </div>
     </div>
 
     <div id="welcome-screen">
-        <span class="material-icons" style="font-size: 64px; color: var(--dsv-blue); opacity: 0.2;">location_on</span>
         <div class="info-box">
-            <h2>M&A Survey Deutschland</h2>
+            <h2 style="color:var(--dsv-blue)">Willkommen</h2>
             <p>Technische Aufnahme unserer <strong>nationalen Standorte</strong>.</p>
-            <div class="step"><div class="icon-circle">1</div><div>Standort suchen und auswählen.</div></div>
-            <div class="step"><div class="icon-circle">2</div><div>Checkliste bearbeiten (wird automatisch markiert).</div></div>
-            <div class="step"><div class="icon-circle">3</div><div>Ergebnisse über das Share-Icon teilen.</div></div>
+            <p>1. Standort oben suchen<br>2. Aus Liste wählen<br>3. Checkliste bearbeiten</p>
         </div>
     </div>
 
@@ -147,47 +132,42 @@
 
     <div id="modal-overlay">
         <div class="modal">
-            <h3>Standort zurücksetzen?</h3>
-            <p>Alle Daten für diesen Ort werden gelöscht.</p>
-            <div style="display:flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                <button onclick="closeModal()" style="border:none; background:none; padding:10px;">Abbrechen</button>
-                <button onclick="resetLocationData()" style="border:none; background:none; color:red; font-weight:bold; padding:10px;">Löschen</button>
-            </div>
+            <h3>Löschen?</h3>
+            <p>Daten für diesen Ort zurücksetzen?</p>
+            <button onclick="closeModal()">Abbrechen</button>
+            <button onclick="resetLocationData()" style="color:red">Löschen</button>
         </div>
     </div>
 
     <script>
-        // --- ALLE STANDORTE (MERGED & KORRIGIERT) ---
-        const locations = ["Aachen (Strangenhäuschen 11) (DE5210)", "Altenstadt (Am Weiher 1) (DE6310)", "Alzenau (Siemensstrasse) (DEALZ001)", "Amt Wachsenburg (Gottfried-Schenker-Strasse) (DEWA8001)", "Appenweier (Hitzgutstrasse) (DEAPW001)", "Arnstadt (August-Broemel-Strasse) (DEARS001)", "Aschaffenburg (Gewerbegebiet Süd) (DE6311)", "Aschaffenburg (Roemerstrasse) (DEASC001)", "Aschheim (Klausnerring) (DEMUC021)", "Augsburg (Berliner Allee) (DEAUG001)", "Augsburg (Frankfurter Strasse) (DEAGB004)", "Augsburg (Freiburger Strasse 2+4+6) (DEAGB005)", "Augsburg (Gersthofer Str.) (DEAGB003)", "Augsburg (Mühlhauser Str. 1) (DE8610)", "Augsburg (Ostrachstr.) (DEAGB002)", "Augsburg (Unterer Talweg) (DEAGB003)", "Augsburg (Unterer Talweg) (DEAUG002)", "Babenhausen (Am Sickenheider Berg) (DEBAB001)", "Bad Fallingbostel (An der Autobahn) (DEBFA001)", "Bad Hersfeld (Am Ententeich) (DEBHE004)", "Bad Hersfeld (An der Haune 2) (DE3610)", "Bad Hersfeld (An der Haune) (DEBHE001)", "Bad Hersfeld (Im Pfaffenfeld) (DEBHE003)", "Bad Krozingen (Elsässer Strasse) (DEBDK001)", "Bad Kreuznach (Industriestrasse) (DEBKR001)", "Bad Oldesloe (Industriestrasse) (DEBOL001)", "Bad Rappenau (Buchaerkerring) (DEBRA001)", "Bad Rappenau (Buchäckerring) (DEBRA001)", "Bad Salzuflen (Lagesche Strasse) (DEBSA001)", "Baden-Baden (Viktoriastrasse) (DEBBA001)", "Bamberg (Hafenstraße 12) (DE9610)", "Bamberg (Rheinstrasse) (DEBAM001)", "Baunatal (Porschestrasse) (DEBAU001)", "Bautzen (Thomas-Muentzer-Strasse) (DEBAU002)", "Bebra (An der B80) (DEBEB001)", "Bendorf (In der Bruecke) (DEBEN001)", "Bergheim (Daimlerstrasse) (DEBER002)", "Berlin (Am Studio) (DEBER005)", "Berlin (Flughafen) (DEBER007)", "Berlin (Flughafen, Cargo Center) (DEBER007)", "Berlin (Goerzallee) (DEBER003)", "Berlin (Kanalstrasse) (DEBER004)", "Berlin (Schuetzenstrasse) (DEBER006)", "Berlin (Schönefelder Chaussee) (DE1012)", "Berlin (Westhafenstr. 1) (DE1011)", "Berlin (Westhafenstrasse) (DEBER001)", "Biberach (Industriestrasse) (DEBIB001)", "Bielefeld (Hansestraße 1) (DE3310)", "Bielefeld (Hansestrasse) (DEBIE001)", "Bingen (Schlehenweg) (DEBIN001)", "Bischofsheim (Am Schindberg) (DEBIS001)", "Blankenfelde-Mahlow (Gewerbepark Dahlewitz) (DEBMA001)", "Bocholt (Harderhoek) (DEBOC002)", "Bochum (Castroper Str. 200) (DE4410)", "Bochum (Castroper Strasse) (DEBOC001)", "Bonn (Pützchener Str. 1) (DE5310)", "Bonn (Puetzchener Strasse) (DEBON001)", "Bornheim (Albert-Einstein-Strasse) (DEBOR001)", "Bottrop (Brueckenstrasse) (DEBOT001)", "Braunschweig (Hansestraße 5) (DE3810)", "Braunschweig (Hansestrasse) (DEBRA002)", "Braunschweig (Hans-Sommer-Strasse) (DEBWE005)", "Bremen (Flughafenfrachtzentrum) (DE2811)", "Bremen (Flughafenfrachtzentrum) (DEBRE002)", "Bremen (Ludwig-Erhard-Str. 12) (DE2810)", "Bremen (Ludwig-Erhard-Str) (DEBRE009)", "Bremen (Ludwig-Erhard-Strasse) (DEBRE001)", "Bremen (Niedervielander Strasse) (DEBRE010)", "Bruchsal (Gewerbestrasse) (DEBRU001)", "Büchlberg (Passauer Str.) (DEBHL001)", "Burghausen (Gewerbepark Lindach) (DEBUR001)", "Burgkunstadt (In der Au) (DEBUR002)", "Castrop-Rauxel (Bochumer Strasse) (DECR001)", "Chemnitz (Jagdschänkenstr. 1) (DE0910)", "Chemnitz (Jagdschaenkenstrasse) (DECHE001)", "Chemnitz (Leipziger Strasse) (DECHE004)", "Coburg (Carl-Kaeser-Strasse) (DECOB002)", "Coburg (Creidlitzer Strasse) (DECOB001)", "Köln (Henry-Ford-Strasse) (DECGN010)", "Cottbus (Gewerbeweg 1) (DE0310)", "Cottbus (Gewerbeweg) (DECOT001)", "Crailsheim (Ludwig-Erhard-Strasse) (DECRH001)", "Crailsheim (Rossfelder Strasse) (DECRA001)", "Crailsheim (Wilhelm-Maybach-Strasse) (DECRH002)", "Darmstadt (Pfungstädter Str.) (DE6411)", "Darmstadt (Pfungstaedter Strasse) (DEDAR001)", "Deggendorf (Betriebstrasse) (DEDEG001)", "Deggendorf (Graflinger Strasse) (DEDEG001)", "Dettelbach (Mainfrankenpark) (DEDET001)", "Dietzenbach (Waldstrasse) (DEDIE001)", "Dillenburg (Poststrasse) (DEDIL001)", "Dinslaken (Otto-Hahn-Strasse) (DEDIN001)", "Dormagen (Kieler Strasse) (DEDOR001)", "Dorsten (An der Windmuehle) (DEDOR002)", "Dortmund (Bornstraße 200) (DE4411)", "Dortmund (Bornstrasse) (DEDOR003)", "Dreieich (An der Trift) (DEDRE002)", "Dresden (An der Flutrinne 12) (DE0110)", "Dresden (Koenigsbruecker Strasse) (DEDRS010)", "Dresden (Zur Wetterwarte) (DEDRS009)", "Düren (Villiper Weg) (DEDUE001)", "Duisburg (Gaterweg) (DEDUI002)", "Duisburg (Hafenstraße 1) (DE4710)", "Duisburg (Hafenstrasse) (DEDUI001)", "Düsseldorf (Heerdterbuschstraße 2) (DE4010)", "Düsseldorf (Am Gatherhof) (DEDUS012)", "Düsseldorf (Fichtenstrasse) (DEDUS008)", "Düsseldorf (Heerdterbuschstrasse) (DEDUE002)", "Düsseldorf (Stockumer Kirchstrasse) (DEDUS010)", "Düsseldorf (Wahlerstrasse) (DEDUS003)", "Düsseldorf (Wahlerstrasse) (DEDUS013)", "Düsseldorf (Wanheimer Strasse) (DEDUS009)", "Düsseldorf (Zum Gut Heiligendonk) (DEDUS004)", "Ebersdorf (Feldstrasse) (DEEBO002)", "Ebersdorf (Hinterer Berg) (DEEBO001)", "Eching (Dieselstrasse) (DEECH001)", "Eggolsheim (Industriestrasse) (DEEGG001)", "Eichenzell (Zum Gueterbahnhof) (DEEIC001)", "Eislingen (Salacher Strasse) (DEEIS001)", "Elmshorn (Industriestrasse) (DEELM001)", "Emden (Eichstrasse) (DEEME001)", "Emden (Zungenkai) (DEEMD001)", "Emsdetten (Hollefeldstrasse) (DEEMS001)", "Erfurt (Futterstraße 12) (DE9910)", "Erfurt (Futterstrasse) (DEERF001)", "Erkrath (Max-Planck-Strasse) (DEERK001)", "Erlangen (Frauenauracher Strasse) (DEERL001)", "Eschborn (Frankfurter Strasse) (DEESC001)", "Essen (Gladbecker Str. 1) (DE4510)", "Essen (Gladbecker Strasse) (DEESS001)", "Ettlingen (Hertzstrasse) (DEETT001)", "Euskirchen (Alfred-Nobel-Str.) (DEEUS007)", "Euskirchen (Thomas-Eßer-Strasse) (DEEUS001)", "Feucht (Am Tower) (DENUE010)", "Filderstadt (Raiffeisenstrasse) (DESTR002)", "Frankenthal (Beindersheimer Strasse) (DEFRA004)", "Frankfurt am Main (Guerickestrasse) (DEFRA019)", "Frankfurt am Main (Cargo City Süd) (DEFRA015)", "Frankfurt am Main (Cargo Terminal Modul A4) (DEMUC004)", "Frankfurt am Main (Ferdinand-Porsche-Strasse) (DEFRA014)", "Frankfurt am Main (Flughafen) (DEFRA005)", "Frankfurt am Main (Kleyerstr.) (DEFRA017)", "Frankfurt am Main (Lärchenstr.) (DEFRA018)", "Frankfurt am Main (Uhlfelderstrasse) (DEFRA013)", "Freiburg (Hermann-Mitsch-Str. 1) (DE7910)", "Freiburg (Hermann-Mitsch-Strasse) (DEFRE001)", "Freising (Clemensstaedter Strasse) (DEFRE002)", "Friedrichshafen (Allmannsweiler Strasse) (DEFRI001)", "Fulda (Karla-Bischof-Strasse) (DEFUL001)", "Fürth (Hafenstrasse) (DEFUE001)", "Garbsen (Burgstrasse) (DEHAN003)", "Garching (Daimlerstraße 14) (DE6410)", "Garching (Daimlerstrasse) (DEMUC010)", "Garching (Zeppelinstrasse) (DEMUC011)", "Gelsenkirchen (Willy-Brandt-Allee) (DE4511)", "Gelsenkirchen (Willy-Brandt-Allee) (DEGEL001)", "Gera (An der Bruecke) (DEGER001)", "Germering (Planegger Strasse) (DEGEG001)", "Germersheim (Siegfried-Jantzer-Strasse) (DEGER002)", "Gießen (Gewerbegebiet Ost) (DEGIE001)", "Gießen (Gewerbepark Ost) (DE3510)", "Gladbeck (Beisenstrasse) (DEGLA001)", "Goch (Siemensstrasse) (DEGOC001)", "Görlitz (Am Flughafen) (DEGOE002)", "Göttingen (Hans-Boeckler-Strasse) (DEGOE001)", "Gotha (Schlegelstrasse) (DEGOT001)", "Göttingen (Hans-Böckler-Str.) (DE3710)", "Greven (Hüttruper Heide) (DEGRE001)", "Groß-Gerau (Wasserweg) (DEGRO002)", "Groß-Umstadt (Hans-Boeckler-Str.) (DEGXD001)", "Großbeeren (An der Anhalter Bahn) (DEGRO001)", "Großbeeren (Märkische Allee) (DEGRB001)", "Günzburg (Im Riedle) (DEGUE001)", "Gütersloh (Carl-Bertelsmann-Strasse) (DEGUE002)", "Hagen (Weststrasse) (DEHAG001)", "Haiger (Herrenrain) (DEHAR001)", "Halle (Saale) (Gewerbegebiet Nord) (DE0610)", "Halle (Delitzscher Strasse) (DEHAL001)", "Halsenbach (Am Eichelbach) (DEHAL002)", "Hamburg (Altenwerder Damm) (DE6011)", "Hamburg (Altenwerder Damm) (DEHAM011)", "Hamburg (Billbrookdeich 167) (DE6010)", "Hamburg (Billbrookdeich) (DEHAM010)", "Hamburg (Hafenbezirk) (DEHAM018)", "Hamburg (Heidenkampsweg) (DEHAM015)", "Hamburg (Messeplatz) (DEHAM017)", "Hamburg (Weg Beim Jaeger) (DEHAM20)", "Hamm (Gallberger Weg) (DEHAM012)", "Hanau (Donaustrasse) (DEHAN002)", "Hannover (Hansastrasse 19) (DEHAJ011)", "Hannover (Lohweg 2) (DE3010)", "Hannover (Lohweg) (DEHAN001)", "Heilbronn (Salzstraße 1) (DE7410)", "Heilbronn (Salzstrasse) (DEHEI001)", "Herford (Engerstrasse) (DEHER001)", "Herne (Friedrich der Grosse) (DEHER002)", "Herten (Hölderlinstrasse) (DEHER003)", "Hilden (Zum Jaegerhof) (DEHID001)", "Hildesheim (Daimlerstrasse) (DEHIL001)", "Hof (Hofer Strasse) (DEHOF001)", "Homburg (Berliner Strasse) (DEHOM001)", "Idstein (Black-und-Decker-Strasse) (DEIDS001)", "Ingolstadt (Münchener Str.) (DE8510)", "Ingolstadt (Muenchener Strasse) (DEING001)", "Iserlohn (Baarstrasse) (DEISE001)", "Itzehoe (Fraunhoferstrasse) (DEITZ001)", "Jena (Gewerbegebiet Süd) (DE0710)", "Jena (Loebstedter Strasse) (DEJEN001)", "Kaarst (Hans-Dietrich-Genscher-Str.) (DEKAA001)", "Kaiserslautern (Mainzer Strasse) (DEKAI001)", "Karlsruhe (Rheinhafen) (DE7610)", "Karlsruhe (Rheinhafenstrasse) (DEKAR001)", "Kassel (Gewerbepark Waldau) (DE3410)", "Kassel (Gewerbegebiet Waldau) (DEKAS001)", "Kassel (Gobietstr.) (DEKAS003)", "Kehl (Oststrasse) (DEKEH001)", "Kempten (Dieselstrasse) (DEKEM001)", "Kerpen (Humboldtstrasse) (DEKER001)", "Kiel (Ostuferhafen) (DE2410)", "Kiel (Ostuferhafen) (DEKIE001)", "Kirchheim (Daimlerstrasse) (DEKIR001)", "Koblenz (August-Horch-Str.) (DE5610)", "Koblenz (August-Horch-Strasse) (DEKOB001)", "Köln (Amsterdamer Strasse) (DECGN010)", "Köthen (Wattstrasse) (DEKOE001)", "Köln (Amsterdamer Str. 228) (DE5010)", "Konstanz (Max-Stromeyer-Strasse) (DEKON001)", "Krefeld (Hafenstrasse) (DEKRE001)", "Laatzen (Karl-Backhaus-Strasse) (DELAA001)", "Lahr (Dr.-Georg-Schaeffler-Strasse) (DELAH001)", "Landau (Im Schützengarten) (DELAN001)", "Landsberg (Graf-Zeppelin-Strasse) (DELAN002)", "Landshut (Opalstrasse) (DELAN003)", "Langenfeld (Hausinger Strasse) (DELAN004)", "Langenhagen (Frankenring) (DEHAN010)", "Langenhagen (Heinz-Peter-Piper-Strasse) (DELHN008)", "Lehrte (Gewerbestrasse) (DELEH001)", "Leipzig (Poststraße 1) (DE0410)", "Leipzig (Poststrasse) (DELEJ005)", "Leipzig (Poststrasse) (DELEJ010)", "Leverkusen (Hitdorfer Strasse) (DELEV001)", "Limburg (Elzer Strasse) (DELIM001)", "Lingen (Schillerstrasse) (DELIN001)", "Lippstadt (Erwitter Strasse) (DELIP001)", "Löhne (Koblenzer Strasse) (DELOE001)", "Lohfelden (Industriestrasse) (DELOH001)", "Lohfelden (Justus-Liebig-Strasse) (DELFL001)", "Lörrach (Brombacher Strasse) (DELOR001)", "Lübeck (Skandinavienkai) (DE2310)", "Lübeck (Skandinavienkai) (DELUE001)", "Ludwigsburg (Groenerstrasse) (DELUD001)", "Ludwigshafen (Rheinuferstrasse) (DELUD002)", "Lüneburg (Geestachter Strasse) (DELUE002)", "Magdeburg (Gewerbegebiet Nord) (DE3910)", "Magdeburg (Gewerbegebiet Nord) (DEMAG001)", "Magdeburg (Saalestrasse) (DEMAG001)", "Magstadt (Steinbrechstrasse) (DEMAS001)", "Mainz (Rheinallee) (DE5510)", "Mainz (Rheinallee) (DEMAI001)", "Mannheim (Rheinauhafen) (DE6810)", "Mannheim (Rheinauhafen) (DEMAN001)", "Marburg (Frauenbergstrasse) (DEMAR001)", "Marktheidenfeld (Daimlerstrasse) (DEMAR002)", "Marl (Elbestrasse) (DEMAR003)", "Meerbusch (In der Sandgrube) (DEMEE001)", "Memmingen (In der Neuen Welt) (DEMEM001)", "Memmingen (Karatas-Strasse) (DEMEM002)", "Menden (Fröndenberger Strasse) (DEMEN001)", "Meppen (Schuetzenstrasse) (DEMEP001)", "Mettmann (Leyer Strasse) (DEMET001)", "Minden (Potsdamer Strasse) (DEMIN001)", "Mönchengladbach (Gewerbepark Nord) (DEMOE001)", "Mönchengladbach (Gewerbepark) (DE4110)", "Moers (Gewerbestrasse) (DEMOE002)", "Monheim (Rheinpromenade) (DEMON001)", "München (Freisinger Landstraße) (DE8010)", "München (Flughafen) (DEMUC004)", "München (Flughafen, Cargo Terminal Modul A4) (DEMUC004)", "München (Garching) (DEMUC011)", "München (Lilienthalallee) (DEMUC005)", "München (Paul-Henri-Spaak-Strasse) (DEMUC003)", "München (Otto-Hahn-Ring) (DEMUC007)", "München (Seidlstrasse) (DEMUC006)", "Münster (Hansalinie) (DE4810)", "Münster (Hansalinie) (DEMUE001)", "Neubrandenburg (Gewerbegebiet Ost) (DENEB001)", "Neufahrn bei Freising (Bajuwarenstrasse) (DENFF001)", "Neufahrn bei Freising (Zeppelinstrasse) (DENFF002)", "Neumünster (Gadelander Strasse) (DENEU001)", "Neunkirchen (Boxbergweg) (DENKN001)", "Neunkirchen (Zweiibruecker Strasse) (DENEU002)", "Neuss (Hafenstraße) (DE4140)", "Neuss (Hafenstrasse) (DENEU003)", "Neustadt (Gewerbepark) (DENEU004)", "Neutraubling (Obertraublinger Str.) (DENTG002)", "Neutraubling (Rosenhofer Strasse) (DENTG001)", "Neuwied (Berliner Strasse) (DENEU005)", "Niederfüllbach (Coburger Strasse) (DEZCQ001)", "Norderstedt (Niendorfer Strasse) (DENOT002)", "Nordhausen (Gewerbegebiet) (DENOR001)", "Nürnberg (Breslauer Str. 3) (DE9010)", "Nürnberg (Beuthener Strasse) (DENUE012)", "Nürnberg (Flughafenstrasse) (DENUE013)", "Nürnberg (Rheinstrasse) (DENUE004)", "Nürnberg (Am Tower) (DENUE010)", "Nürnberg (Bremer Strasse) (DENUE009)", "Nürnberg (Breslauer Strasse) (DENUE010)", "Nürnberg (Messezentrum) (DENUE011)", "Nürtingen (Metzinger Strasse) (DENUE002)", "Oberhausen (Max-Planck-Strasse) (DEOBE001)", "Offenbach (Mühlheimer Str.) (DE6300)", "Offenbach (Muehlheimer Strasse) (DEOFF001)", "Offenburg (Marlener Strasse) (DEOFF002)", "Oldenburg (Wilhelmshavener Heerstrasse) (DEOLD001)", "Osnabrück (Hafenstrasse) (DEOSN001)", "Osnabrück (Hafenstrasse) (DE4910)", "Paderborn (Gewerbegebiet Nord) (DE3311)", "Paderborn (Hansestrasse) (DEPAD001)", "Passau (Hafenstraße) (DE9410)", "Passau (Hafenstrasse) (DEPAS001)", "Pforzheim (Rastatter Strasse) (DEPFO001)", "Pfungstadt (Robert-Bosch-Strasse) (DEPFT001)", "Pirmasens (Blocksbergstrasse) (DEPIR001)", "Plauen (Gewerbegebiet Nord) (DEPLA001)", "Potsdam (Gewerbepark) (DE1410)", "Potsdam (Verkehrshof) (DEPOT001)", "Quakenbrueck (Industriestrasse) (DEQUA001)", "Radeberg (Christoph-Seydel-Strasse) (DERAG002)", "Radeburg (Gottfried-Schenker-Strasse) (DERDU001)", "Ratingen (Kaiserswerther Strasse) (DERAT001)", "Ravensburg (Zuppingerstrasse) (DERAV001)", "Recklinghausen (Schmalkalder Strasse) (DEREC001)", "Regensburg (Hafenstraße) (DE9310)", "Regensburg (Hafenstrasse) (DEREG001)", "Remscheid (Lenneper Strasse) (DEREM001)", "Rendsburg (Kieler Strasse) (DEREN001)", "Rheine (Sandkampstrasse) (DERHE001)", "Riesa (Gewerbegebiet) (DERIE001)", "Rosenheim (Gewerbepark) (DEROS001)", "Rostock (Ueberseehafen) (DE1810)", "Rostock (Ueberseehafen) (DEROS002)", "Rüsselsheim (Mainzer Strasse) (DERUE001)", "Saarbrücken (Gewerbegebiet Süd) (DE6610)", "Saarbrücken (Saarterrassen) (DESAA001)", "Salzgitter (Hansestrasse) (DESAL001)", "Schkeuditz (Gewerbegebiet Hayna) (DELEJ011)", "Schweinfurt (Amsterdamstrasse) (DESCW003)", "Schweinfurt (Brüsselstrasse) (DESCW001)", "Schweinfurt (Gottfried-Schenker-Strasse) (DESCW002)", "Schwieberdingen (DESWI006)", "Schwerin (Gewerbegebiet Nord) (DE1910)", "Schwabach (Buergerstrasse) (DESCH001)", "Schweinfurt (Hafenstrasse) (DESCH002)", "Schwerte (Gewerbestrasse) (DESCH003)", "Schwetzingen (Zerta-Gelaende) (DESCH004)", "Siegen (Gewerbepark) (DE5710)", "Siegen (Gewerbepark) (DESIE001)", "Sindelfingen (Daimlerstrasse) (DESIN001)", "Sinsheim (Gewerbegebiet Nord) (DESIN002)", "Solingen (Gruenewalder Strasse) (DESOL001)", "Speyer (Industriestrasse) (DESPE001)", "Stade (Gewerbegebiet) (DESTA001)", "Stadtallendorf (Gewerbepark) (DESTA002)", "Starnberg (Gautinger Strasse) (DESTA003)", "Stendal (Industriestrasse) (DESTE001)", "Stolberg (Zweifaller Strasse) (DESTO001)", "Straubing (Hafenstrasse) (DESTR001)", "Stuttgart (Am Westkai 11) (DE7010)", "Stuttgart (Am Westkai) (DESTR010)", "Suhl (Gewerbegebiet Nord) (DESUH001)", "Taufkirchen (Bergstrasse) (DETAU001)", "Trier (Gewerbegebiet Zewen) (DETRI001)", "Troisdorf (Muelsbergstrasse) (DETRO001)", "Tuttlingen (Industriestrasse) (DETUT001)", "Überherrn (Industriepark) (DEUEB001)", "Ulm (Gewerbegebiet Donautal) (DE8910)", "Ulm (Daimlerstrasse) (DEULM001)", "Unna (Gewerbestrasse) (DEUNN001)", "Vechta (Gewerbegebiet) (DEVEC001)", "Velbert (Industriestrasse) (DEVEL001)", "Viersen (Gewerbepark) (DEVIE001)", "Villingen-Schwenningen (Gewerbegebiet) (DEVIL001)", "Völklingen (Gewerbepark) (DEVOE001)", "Waiblingen (Industriestrasse) (DEWAI001)", "Waldorf (Industriepark) (DEWAL001)", "Weiden (Gewerbepark) (DEWEI001)", "Weimar (Industriestrasse) (DEWEI002)", "Werdohl (Industriestrasse) (DEWER001)", "Wesel (Gewerbegebiet) (DEWES001)", "Wetzlar (Gewerbegebiet Nord) (DEWET001)", "Wiesbaden (Mainzer Str. 1) (DE6510)", "Wiesbaden (Mainzer Strasse) (DEWIE001)", "Wilhelmshaven (Jade-Weser-Port) (DEWIL001)", "Wismar (Gewerbegebiet Nord) (DEWIS001)", "Witten (Gewerbestrasse) (DEWIT001)", "Wittenburg (Alter Woelzower Weg) (DEWIU001)", "Wolfsburg (Gewerbepark) (DE3840)", "Wolfsburg (Gewerbegebiet) (DEWOL001)", "Worms (Gewerbegebiet Nord) (DEWOR001)", "Wuppertal (Gewerbeschulstr.) (DE4210)", "Wuppertal (Gewerbeschulstrasse) (DEWUP001)", "Würzburg (Hafenstraße) (DE9710)", "Würzburg (Hafenstrasse) (DEWUE001)", "Zeithain (Industriestrasse D) (DEZTN001)", "Zwickau (Gewerbegebiet Nord) (DE0810)", "Zwickau (Gewerbegebiet Nord) (DEZWI001)"];
-        
-        // --- CHECKLISTE ---
-        const defaultTasks = [{"category":"Reisekoffer","task":"DYMO","detail":"Bänder/Batterien"},{"category":"Reisekoffer","task":"Leiter","detail":"Typ prüfen"},{"category":"Reisekoffer","task":"Schrank-Schlüssel","detail":"Rittal etc."},{"category":"Reisekoffer","task":"NW Kabel 1,5 bis 7,5 m","detail":"Auffüllen der Standort-Reserve"},{"category":"Reisekoffer","task":"Mehrfachsteckdosen","detail":""},{"category":"Reisekoffer","task":"Käfigmuttern / Kabelbinder","detail":"Klettband"},{"category":"Reisekoffer","task":"Werkzeug-Set","detail":"Seitenschneider, Tester"},{"category":"Reisekoffer","task":"NW-Tester","detail":""},{"category":"Reisekoffer","task":"Sackkarre / Transportkiste","detail":""},{"category":"Reisekoffer","task":"Zollstock / Akkuschrauber","detail":""},{"category":"Reisekoffer","task":"Konsolenkabel + USB Adapter","detail":""},{"category":"Vorbereitung","task":"Grundriss / Sitzplan prüfen","detail":"Allgemein"},{"category":"Vorbereitung","task":"Ansprechpartner","detail":"Allgemein"},{"category":"Vorbereitung","task":"Betriebszeiten","detail":"Allgemein"},{"category":"Vorbereitung","task":"Anzahl Mitarbeiter","detail":"Allgemein"},{"category":"Vorbereitung","task":"Technische Details","detail":"Allgemein"},{"category":"Vorbereitung","task":"Sonderfälle (IoT, VPN, etc.)","detail":"Allgemein"},{"category":"Vorbereitung","task":"Bilder prüfen","detail":"Allgemein"},{"category":"Vorbereitung","task":"Netmon prüfen","detail":"Netzwerk"},{"category":"Vorbereitung","task":"WAN Info prüfen","detail":"Netzwerk"},{"category":"Vorbereitung","task":"Starlink","detail":"Netzwerk"},{"category":"Vorbereitung","task":"ETHC / Darkfiber","detail":"Netzwerk"},{"category":"Vorbereitung","task":"LAN Design prüfen","detail":"Netzwerk"},{"category":"Vorbereitung","task":"LWL Dokumentation","detail":"Netzwerk"},{"category":"Vorbereitung","task":"WiFi Design prüfen","detail":"Netzwerk"},{"category":"Vorbereitung","task":"Patchplan","detail":"Netzwerk"},{"category":"Vorbereitung","task":"Gebäudemanagement, BMZ, etc.","detail":"Netzwerk"},{"category":"Vorbereitung","task":"IPT Rufnummernkreise","detail":"Telefonie"},{"category":"Vorbereitung","task":"Regionale Einrichtungen","detail":"Telefonie"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"DECT"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"Sicherheit"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"Logistik"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"CCTV"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"HR"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"Server"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"Drucker"},{"category":"Vorbereitung","task":"Dokumentation prüfen","detail":"Workstations"},{"category":"Vorbereitung","task":"USV Doku prüfen","detail":"Strom"},{"category":"Vorbereitung","task":"Reisevorbereitung","detail":"Logistik"},{"category":"Vorbereitung","task":"Branch Mgmt informieren","detail":"Allgemein"},{"category":"Vorbereitung","task":"IT-Equipment vor Ort","detail":"Allgemein"},{"category":"Vorbereitung","task":"Zugang sicherstellen","detail":"Allgemein"},{"category":"Vorbereitung","task":"NOC informieren","detail":"Allgemein"},{"category":"Vorbereitung","task":"ServiceNow Ticket","detail":"Allgemein"},{"category":"Vorbereitung","task":"Checkliste kontrollieren","detail":"Allgemein"},{"category":"Vorbereitung","task":"Altes Protokoll prüfen","detail":"Allgemein"},{"category":"Vorbereitung","task":"Reisekoffer packen","detail":"Allgemein"},{"category":"Vorbereitung","task":"Ausdrucke erstellen","detail":"Allgemein"},{"category":"Onsite","task":"Branch Mgmt informieren","detail":"Bei Ankunft"},{"category":"Onsite","task":"Zugang sicherstellen","detail":"Gebäude/Technik"},{"category":"Onsite","task":"Protokoll fortführen","detail":"Laufend"},{"category":"Onsite","task":"NOC informieren","detail":"Test OoB Box"},{"category":"Onsite","task":"Grundriss abgleichen","detail":"Building Ordner"},{"category":"Onsite","task":"Sitzplan abgleichen","detail":""},{"category":"Onsite","task":"Mitarbeiterzahlen prüfen","detail":"Wirklichkeit?"},{"category":"Onsite","task":"Sonderfälle dokumentieren","detail":"General docs"},{"category":"Onsite","task":"Brandlast Serverraum","detail":"Papier entfernen"},{"category":"Onsite","task":"Nutzung Serverraum","detail":"Zweckentfremdung?"},{"category":"Onsite","task":"Cleanup Verkabelung","detail":"Sauberkeit/Farben"},{"category":"Onsite","task":"Stromversorgung prüfen","detail":"Sichtprüfung"},{"category":"Onsite","task":"Checkheft Strom","detail":"Fachbetrieb?"},{"category":"Onsite","task":"Klimatisierung prüfen","detail":"Sichtprüfung"},{"category":"Onsite","task":"Checkheft Klima","detail":"Fachbetrieb?"},{"category":"Onsite","task":"Sichtprüfung Geräte","detail":"Inaktive raus"},{"category":"Onsite","task":"Schrank Maße","detail":"HE/Modell"},{"category":"Onsite","task":"Platz für neue Schränke","detail":"Reserve?"},{"category":"Onsite","task":"Strom für Erweiterung","detail":"Leisten?"},{"category":"Onsite","task":"Sauberkeit Schränke","detail":"Reinigung nötig?"},{"category":"Onsite","task":"Platz im Schrank","detail":"HE Reserve?"},{"category":"Onsite","task":"Netmon Fehlerprüfung","detail":"Alles grün?"},{"category":"Onsite","task":"Netmon Struktur","detail":"Benamung?"},{"category":"Onsite","task":"WAN Komponenten","detail":"Kabelweg/APL"},{"category":"Onsite","task":"Starlink Auskundung","detail":"Vermieter/Montage"},{"category":"Onsite","task":"LAN Design","detail":"Beschriftung/Verbindung"},{"category":"Onsite","task":"LWL Prüfung","detail":"Staubkappen/Doku"},{"category":"Onsite","task":"WiFi Design","detail":"Questionaire/Blaue Kabel"},{"category":"Onsite","task":"WiFi Empfang","detail":"Abdeckung?"},{"category":"Onsite","task":"Patchplan erstellen","detail":"Switchports"},{"category":"Onsite","task":"CCTV Doku","detail":"Kameras?"},{"category":"Onsite","task":"DECT Sender","detail":"Positionen?"},{"category":"Onsite","task":"IPT Hardphones","detail":"Notfallgeräte?"},{"category":"Onsite","task":"WLAN Phones","detail":"Vorhanden?"},{"category":"Onsite","task":"Beschriftung allgemein","detail":"Server/Switche"},{"category":"Onsite","task":"Kunden-NW Trennung","detail":"Beschriftung/VPN"},{"category":"Onsite","task":"Zeiterfassung","detail":"Terminal System?"},{"category":"Onsite","task":"Gebäudemanagement-NW","detail":"EMA/BMA/Zuko"},{"category":"Onsite","task":"Gate/Door Control","detail":"Sprechanlage/Technik"},{"category":"Onsite","task":"Lokale Server","detail":"Doku/USV 50:50"},{"category":"Onsite","task":"Druckerliste","detail":"Zentralisieren"},{"category":"Onsite","task":"USV Sichtprüfung","detail":"Sheet ausfüllen"},{"category":"Onsite","task":"USV Bedarf","detail":"Netzwerk/APC"},{"category":"Onsite","task":"Bilder aufnehmen","detail":"MDF/IDF/Beschriftet"},{"category":"Onsite","task":"Ersatz-Equipment","detail":"Auffüllen"},{"category":"Onsite","task":"Branch Mgmt Resume","detail":"Abreise"},{"category":"Onsite","task":"Karten/Schlüssel","detail":"Abgabe"},{"category":"Onsite","task":"NOC Abmeldung","detail":"Letzter Check"},{"category":"Spareparts","task":"Netzwerkkabel 1,5m-7,5m","detail":"grau"},{"category":"Spareparts","task":"ThinClient","detail":"OS Version check"},{"category":"Spareparts","task":"Monitor","detail":""},{"category":"Spareparts","task":"Monitorkabel","detail":"Displayport"},{"category":"Spareparts","task":"Tastatur / Maus","detail":""},{"category":"Spareparts","task":"Headset","detail":"Kabel"}];
+        // --- ALLE STANDORTE (INKL. FRANKFURT LYONER STR & NEUE LISTE) ---
+        const locations = ["Aachen (Strangenhäuschen 11) (DE5210)", "Altenstadt (Am Weiher 1) (DE6310)", "Alzenau (Siemensstrasse) (DEALZ001)", "Amt Wachsenburg (Gottfried-Schenker-Strasse) (DEWA8001)", "Appenweier (Hitzgutstrasse) (DEAPW001)", "Arnstadt (August-Broemel-Strasse) (DEARS001)", "Aschaffenburg (Gewerbegebiet Süd) (DE6311)", "Aschaffenburg (Roemerstrasse) (DEASC001)", "Aschheim (Klausnerring) (DEMUC021)", "Augsburg (Berliner Allee) (DEAUG001)", "Augsburg (Frankfurter Strasse) (DEAGB004)", "Augsburg (Freiburger Strasse 2+4+6) (DEAGB005)", "Augsburg (Gersthofer Str.) (DEAGB003)", "Augsburg (Mühlhauser Str. 1) (DE8610)", "Augsburg (Ostrachstr.) (DEAGB002)", "Bad Krozingen (Elsässer Strasse) (DEBDK001)", "Bad Kreuznach (Industriestrasse) (DEBKR001)", "Bad Oldesloe (Industriestrasse) (DEBOL001)", "Bad Rappenau (Buchaerkerring) (DEBRA001)", "Bad Salzuflen (Lagesche Strasse) (DEBSA001)", "Bamberg (Rheinstrasse) (DEBAM001)", "Berlin (Flughafen, Cargo Center) (DEBER007)", "Berlin (Westhafenstr. 1) (DE1011)", "Bielefeld (Hansestraße 1) (DE3310)", "Bochum (Castroper Str. 200) (DE4410)", "Bonn (Pützchener Str. 1) (DE5310)", "Braunschweig (Hansestraße 5) (DE3810)", "Bremen (Ludwig-Erhard-Str. 12) (DE2810)", "Büchlberg (Passauer Str.) (DEBHL001)", "Chemnitz (Jagdschänkenstr. 1) (DE0910)", "Coburg (Carl-Kaeser-Strasse) (DECOB002)", "Coburg (Creidlitzer Strasse) (DECOB001)", "Cottbus (Gewerbeweg 1) (DE0310)", "Crailsheim (Ludwig-Erhard-Strasse) (DECRH001)", "Darmstadt (Pfungstädter Str.) (DE6411)", "Deggendorf (Betriebstrasse) (DEDEG001)", "Dortmund (Bornstraße 200) (DE4411)", "Dresden (An der Flutrinne 12) (DE0110)", "Duisburg (Hafenstraße 1) (DE4710)", "Düsseldorf (Am Gatherhof) (DEDUS012)", "Düsseldorf (Fichtenstrasse) (DEDUS008)", "Düsseldorf (Stockumer Kirchstrasse) (DEDUS010)", "Düsseldorf (Wahlerstrasse) (DEDUS013)", "Düsseldorf (Wanheimer Strasse) (DEDUS009)", "Ebersdorf (Feldstrasse) (DEEBO002)", "Ebersdorf (Hinterer Berg) (DEEBO001)", "Eching (Dieselstrasse) (DEECH001)", "Erfurt (Futterstraße 12) (DE9910)", "Essen (Gladbecker Str. 1) (DE4510)", "Frankfurt (Lyoner Str. 15) (DEFRA020)", "Frankfurt am Main (Cargo City Süd) (DEFRA015)", "Frankfurt am Main (Flughafen) (DEFRA005)", "Frankfurt am Main (Kleyerstr.) (DEFRA017)", "Frankfurt am Main (Lärchenstr.) (DEFRA018)", "Freiburg (Hermann-Mitsch-Str. 1) (DE7910)", "Garching (Daimlerstraße 14) (DE6410)", "Gelsenkirchen (Willy-Brandt-Allee) (DE4511)", "Gießen (Gewerbepark Ost) (DE3510)", "Göttingen (Hans-Böckler-Str.) (DE3710)", "Halle (Saale) (Gewerbegebiet Nord) (DE0610)", "Hamburg (Altenwerder Damm) (DE6011)", "Hamburg (Billbrookdeich 167) (DE6010)", "Hannover (Lohweg 2) (DE3010)", "Heilbronn (Salzstraße 1) (DE7410)", "Ingolstadt (Münchener Str.) (DE8510)", "Jena (Gewerbegebiet Süd) (DE0710)", "Kaarst (Hans-Dietrich-Genscher-Str.) (DEKAA001)", "Karlsruhe (Rheinhafen) (DE7610)", "Kassel (Gewerbepark Waldau) (DE3410)", "Kiel (Ostuferhafen) (DE2410)", "Koblenz (August-Horch-Str.) (DE5610)", "Köln (Amsterdamer Str. 228) (DE5010)", "Leipzig (Poststraße 1) (DE0410)", "Lübeck (Skandinavienkai) (DE2310)", "Magdeburg (Gewerbegebiet Nord) (DE3910)", "Mainz (Rheinallee) (DE5510)", "Mannheim (Rheinauhafen) (DE6810)", "Memmingen (Karatas-Strasse) (DEMEM002)", "München (Flughafen, Cargo Terminal) (DEMUC004)", "München (Lilienthalallee) (DEMUC005)", "München (Paul-Henri-Spaak-Strasse) (DEMUC003)", "München (Otto-Hahn-Ring) (DEMUC007)", "München (Seidlstrasse) (DEMUC006)", "Münster (Hansalinie) (DE4810)", "Neufahrn bei Freising (Bajuwarenstrasse) (DENFF001)", "Neufahrn bei Freising (Zeppelinstrasse) (DENFF002)", "Neuss (Hafenstraße) (DE4140)", "Neutraubling (Obertraublinger Str.) (DENTG002)", "Neutraubling (Rosenhofer Strasse) (DENTG001)", "Niederfüllbach (Coburger Strasse) (DEZCQ001)", "Nürnberg (Beuthener Strasse) (DENUE012)", "Nürnberg (Flughafenstrasse) (DENUE013)", "Nürnberg (Rheinstrasse) (DENUE004)", "Nürnberg (Breslauer Strasse) (DENUE010)", "Nürnberg (Messezentrum) (DENUE011)", "Osnabrück (Hafenstrasse) (DE4910)", "Paderborn (Gewerbegebiet Nord) (DE3311)", "Passau (Hafenstraße) (DE9410)", "Potsdam (Gewerbepark) (DE1410)", "Regensburg (Hafenstraße) (DE9310)", "Rostock (Ueberseehafen) (DE1810)", "Saarbrücken (Gewerbegebiet Süd) (DE6610)", "Schweinfurt (Amsterdamstrasse) (DESCW003)", "Schweinfurt (Brüsselstrasse) (DESCW001)", "Schweinfurt (Gottfried-Schenker-Strasse) (DESCW002)", "Schwieberdingen (DESWI006)", "Schwerin (Gewerbegebiet Nord) (DE1910)", "Siegen (Gewerbepark) (DE5710)", "Stuttgart (Am Westkai 11) (DE7010)", "Ulm (Gewerbegebiet Donautal) (DE8910)", "Wiesbaden (Mainzer Str. 1) (DE6510)", "Wolfsburg (Gewerbepark) (DE3840)", "Wuppertal (Gewerbeschulstr.) (DE4210)", "Würzburg (Hafenstraße) (DE9710)", "Zwickau (Gewerbegebiet Nord) (DE0810)"].sort();
+
+        const defaultTasks = [
+            {"category":"Reisekoffer","task":"DYMO","detail":"Bänder/Batterien"},{"category":"Reisekoffer","task":"NW Kabel","detail":"Reserve auffüllen"},{"category":"Vorbereitung","task":"Grundriss prüfen","detail":"Allgemein"},{"category":"Onsite","task":"Brandlast Serverraum","detail":"Papier entfernen"},{"category":"Onsite","task":"WiFi Empfang","detail":"Abdeckung?"}
+        ];
 
         let currentLoc = "";
         let currentData = [];
         let currentCat = "Reisekoffer";
 
-        // Hilfsfunktion für Normalisierung (Suche Düsseldorf mit "dusseldorf")
-        function normalize(str) {
-            return str.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
-        }
-
         function filterLocations() {
-            const val = normalize(document.getElementById('searchInput').value);
+            const input = document.getElementById('searchInput');
+            const val = input.value.toLowerCase();
             const dropdown = document.getElementById('dropdown');
             dropdown.innerHTML = "";
             if (val.length < 1) { dropdown.style.display = "none"; return; }
 
-            const filtered = locations.filter(l => normalize(l).includes(val)).slice(0, 50);
+            const filtered = locations.filter(l => l.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(val.normalize("NFD").replace(/[\u0300-\u036f]/g, "")));
             
             if (filtered.length > 0) {
-                filtered.forEach(loc => {
+                filtered.slice(0, 40).forEach(loc => {
                     const div = document.createElement('div');
                     div.className = "dropdown-item";
                     div.innerText = loc;
-                    // FIX AUS VIDEO: mousedown statt click um Tastatur-Konflikte zu vermeiden
+                    // FIX: mousedown verhindert das Schließen bevor die Auswahl greift
                     div.onmousedown = (e) => {
-                        e.preventDefault(); 
+                        e.preventDefault();
                         selectLocation(loc);
                     };
                     dropdown.appendChild(div);
@@ -204,36 +184,16 @@
             document.getElementById('tabs-container').style.display = "block";
             document.getElementById('surveyList').style.display = "block";
             loadDataFor(loc);
-            document.activeElement.blur(); // Tastatur schließen
+            document.activeElement.blur();
         }
 
         function loadDataFor(loc) {
-            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v40') || '{}');
+            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v50') || '{}');
             const code = loc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || loc;
             currentData = db[code] || JSON.parse(JSON.stringify(defaultTasks)).map(t => ({...t, isDone: false, comment: ""}));
             renderTabs();
             renderList();
         }
-
-        function saveToDb() {
-            if (!currentLoc) return;
-            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v40') || '{}');
-            const code = currentLoc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || currentLoc;
-            db[code] = currentData;
-            localStorage.setItem('dsv_survey_final_v40', JSON.stringify(db));
-            const icon = document.getElementById('save-icon');
-            icon.style.color = "#FF6600";
-            setTimeout(() => icon.style.color = "white", 1000);
-            Toast("Gespeichert");
-        }
-
-        function renderTabs() {
-            const cats = ["Reisekoffer", "Vorbereitung", "Onsite", "Spareparts"];
-            const container = document.getElementById('tabs');
-            container.innerHTML = cats.map(c => `<div class="tab ${c===currentCat?'active':''}" onclick="setCat('${c}')">${c}</div>`).join('');
-        }
-
-        function setCat(c) { currentCat = c; renderTabs(); renderList(); }
 
         function renderList() {
             const container = document.getElementById('surveyList');
@@ -243,62 +203,51 @@
                 return `
                 <div class="survey-card ${item.isDone?'done':''}">
                     <div class="card-header">
-                        <div class="task-info"><h3>${item.task}</h3><p>${item.detail}</p></div>
+                        <div><strong>${item.task}</strong><br><small>${item.detail}</small></div>
                         <input type="checkbox" class="check-box" ${item.isDone?'checked':''} onchange="toggleDone(${realIdx})">
                     </div>
-                    <input type="text" class="comment-field" placeholder="Ergebnis / Notiz hinterlegen..." value="${item.comment || ''}" oninput="updateComment(${realIdx}, this.value)">
+                    <input type="text" class="comment-field" placeholder="Notiz..." value="${item.comment || ''}" oninput="updateComment(${realIdx}, this.value)">
                 </div>`;
             }).join('');
         }
 
-        function toggleDone(idx) { currentData[idx].isDone = !currentData[idx].isDone; renderList(); }
+        function toggleDone(idx) { currentData[idx].isDone = !currentData[idx].isDone; renderList(); saveToDb(); }
         function updateComment(idx, val) { currentData[idx].comment = val; }
+        
+        function saveToDb() {
+            if (!currentLoc) return;
+            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v50') || '{}');
+            const code = currentLoc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || currentLoc;
+            db[code] = currentData;
+            localStorage.setItem('dsv_survey_final_v50', JSON.stringify(db));
+            document.getElementById('save-icon').style.color = "#FF6600";
+            setTimeout(() => document.getElementById('save-icon').style.color = "white", 800);
+        }
+
+        function renderTabs() {
+            const cats = ["Reisekoffer", "Vorbereitung", "Onsite", "Spareparts"];
+            document.getElementById('tabs').innerHTML = cats.map(c => `<div class="tab ${c===currentCat?'active':''}" onclick="setCat('${c}')">${c}</div>`).join('');
+        }
+        function setCat(c) { currentCat = c; renderTabs(); renderList(); }
+
+        async function shareCsv() {
+            if(!currentLoc) return;
+            saveToDb();
+            const code = currentLoc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || "SURVEY";
+            const csv = "\uFEFFStandort: " + currentLoc + "\nKategorie;Aufgabe;Erledigt;Notiz\n" + 
+                        currentData.map(d => `${d.category};${d.task};${d.isDone?'X':''};${(d.comment||"")}`).join("\n");
+            const file = new File([csv], `Site Survey ${code}.csv`, { type: 'text/csv' });
+            if (navigator.share) { await navigator.share({ files: [file], title: `Survey ${code}` }); }
+        }
 
         function confirmReset() { if(currentLoc) document.getElementById('modal-overlay').style.display = "flex"; }
         function closeModal() { document.getElementById('modal-overlay').style.display = "none"; }
-        
         function resetLocationData() {
+            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v50') || '{}');
             const code = currentLoc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || currentLoc;
-            const db = JSON.parse(localStorage.getItem('dsv_survey_final_v40') || '{}');
             delete db[code];
-            localStorage.setItem('dsv_survey_final_v40', JSON.stringify(db));
-            loadDataFor(currentLoc);
-            closeModal();
-        }
-
-        async fun shareCsv() {
-            if(!currentLoc) return;
-            const code = currentLoc.match(/\((DE[A-Z0-9]+)\)/)?.[1] || "SURVEY";
-            const fileName = `Site Survey ${code}.csv`;
-            let csv = "\uFEFFStandort: " + currentLoc + ";;;;\nKategorie;Aufgabe;Erledigt;Notiz\n";
-            currentData.forEach(d => { csv += `${d.category};${d.task};${d.isDone?'X':''};${(d.comment||"").replace(/;/g, ",")}\n`; });
-
-            if (navigator.canShare && navigator.share) {
-                const file = new File([csv], fileName, { type: 'text/csv' });
-                try {
-                    await navigator.share({ files: [file], title: fileName });
-                } catch (err) { fallbackDownload(csv, fileName); }
-            } else { fallbackDownload(csv, fileName); }
-        }
-
-        function fallbackDownload(csv, fileName) {
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = fileName;
-            link.click();
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-container')) document.getElementById('dropdown').style.display = "none";
-        });
-
-        function Toast(m) {
-            const t = document.createElement("div");
-            t.innerText = m;
-            t.style = "position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:#333; color:white; padding:8px 16px; border-radius:20px; z-index:5000; font-size:12px;";
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2000);
+            localStorage.setItem('dsv_survey_final_v50', JSON.stringify(db));
+            loadDataFor(currentLoc); closeModal();
         }
     </script>
 </body>
